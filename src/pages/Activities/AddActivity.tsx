@@ -6,12 +6,12 @@ import {
   IonTitle, IonToolbar, IonFooter, IonButton,
   IonItem, IonLabel, IonInput, IonSelect, IonSelectOption, IonList, useIonAlert, IonModal,
 } from '@ionic/react';
-import { IonInputCustomEvent, OverlayEventDetail } from '@ionic/core/components';
+import { OverlayEventDetail } from '@ionic/core/components';
 
 import { useForm } from 'react-hook-form';
 import { PATHS } from '../../app.config';
 import { CategoryType, CategoryValue, RepetitionUnitValue } from '../../api/activities.model';
-
+import './Activites.css';
 interface Form {
   title: string;
   category: CategoryType;
@@ -34,7 +34,7 @@ const AddActivity: React.FC = () => {
 
   function onWillDismiss(ev: CustomEvent<OverlayEventDetail>) {
     console.log('onWillDismiss', ev);
-    // reset
+    // reset new records type
     setNewRecordsTypeName('Time');
     setNewRecordsTypeUnit('min');
   }
@@ -47,7 +47,6 @@ const AddActivity: React.FC = () => {
   }
   const {
     handleSubmit,
-
     formState: { errors },
   } = useForm({});
 
@@ -129,14 +128,14 @@ const AddActivity: React.FC = () => {
             {CategoryValue.map(category => <IonSelectOption value={category}>{category}</IonSelectOption>)}
             </IonSelect>
           </IonItem>
-          <IonItem>
+          <IonItem  class="align-items-start">
           <IonLabel>Activity Dimensions</IonLabel>
           <IonList>
               {Object.entries(formStates.recordsType).map(([key, value]) => (
-                <><p>{`${value.name} [${value.unit}]`}</p> <IonButton onClick={()=>{removeRecordsType(key)}}>Remove</IonButton></>
+                <><p>{`${value.name} [${value.unit}]`}</p> <IonButton expand="block" onClick={()=>{removeRecordsType(key)}}>Remove</IonButton></>
               ))}
-            </IonList>
-          <IonButton id="open-modal" expand="block">Add</IonButton>
+              <IonButton id="open-modal" expand="block">Add</IonButton>
+          </IonList>
           <IonModal ref={modal} trigger="open-modal" onWillDismiss={(ev) => onWillDismiss(ev)}>
           <IonHeader>
             <IonToolbar>
@@ -162,7 +161,7 @@ const AddActivity: React.FC = () => {
             <IonItem>
               <IonLabel position="stacked">Unit</IonLabel>
               <IonSelect
-                value={RepetitionUnitValue[0]}
+                placeholder={RepetitionUnitValue[0]}
                 cancelText="Cancel"
                 okText="Ok"
                 multiple={false}
@@ -174,7 +173,7 @@ const AddActivity: React.FC = () => {
           </IonContent>
         </IonModal>
         </IonItem>
-          <IonButton type="submit">submit</IonButton>
+          <IonButton type="submit" routerLink={PATHS.activities.url} routerDirection="none">submit</IonButton>
         </form>
       </IonContent>
       <IonFooter>Repeter</IonFooter>
