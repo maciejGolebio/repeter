@@ -1,5 +1,19 @@
 .align-items-start {
     align-items: start;
-    background-color: brown;
   }
   
+.ion-no-padding {
+    padding: 0px;
+    margin-top: -10px;
+  }
+.ion-contr-padding{
+  margin-top: 20px;
+}
+
+.form-buttons-margin{
+  margin: 20px;
+}
+
+ion-header {
+  margin-bottom: 60px;
+  }
