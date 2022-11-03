@@ -16,19 +16,19 @@ interface Form {
   title: string;
   category: CategoryType;
   tags: CategoryType[];
-  recordsType: Record<string, {name: string, unit: string}>;
+  recordsType: Record<string, { name: string, unit: string }>;
 }
 
 const AddActivity: React.FC = () => {
   const modal = useRef<HTMLIonModalElement>(null);
   const input = useRef<HTMLIonInputElement>(null);
- 
+
   function confirm() {
     if (newRecordsTypeName && newRecordsTypeUnit) {
       modal.current?.dismiss(input.current?.value, 'confirm');
       addRecordType(newRecordsTypeName, newRecordsTypeUnit);
-    }else{
-      alert(JSON.stringify({newRecordsTypeName, newRecordsTypeUnit}, null, 2));
+    } else {
+      alert(JSON.stringify({ newRecordsTypeName, newRecordsTypeUnit }, null, 2));
     }
   }
 
@@ -38,7 +38,7 @@ const AddActivity: React.FC = () => {
     setNewRecordsTypeName('Time');
     setNewRecordsTypeUnit('min');
   }
-  
+
   const defaultForm = {
     title: 'New Activity',
     category: CategoryValue[0],
@@ -63,10 +63,10 @@ const AddActivity: React.FC = () => {
     setFormStates({ ...formStates, category: e.detail.value });
   }
 
-  const onTagsChange = (_event:any) => {
+  const onTagsChange = (_event: any) => {
     setFormStates(formStates => ({ ...formStates, tags: _event.detail.value }));
   };
-  
+
   const onRecordsTypeNameChange = (e: any) => {
     setNewRecordsTypeName(e.target.value);
   }
@@ -114,7 +114,7 @@ const AddActivity: React.FC = () => {
               okText="Ok"
               onIonChange={(_e) => onTagsChange(_e)}
             >
-             {CategoryValue.map(category => <IonSelectOption value={category}>{category}</IonSelectOption>)}
+              {CategoryValue.map(category => <IonSelectOption value={category}>{category}</IonSelectOption>)}
             </IonSelect>
           </IonItem>
           <IonItem>
@@ -125,59 +125,63 @@ const AddActivity: React.FC = () => {
               okText="Ok"
               multiple={false}
               onIonChange={(_e) => onCategoryChange(_e)}>
-            {CategoryValue.map(category => <IonSelectOption value={category}>{category}</IonSelectOption>)}
+              {CategoryValue.map(category => <IonSelectOption value={category}>{category}</IonSelectOption>)}
             </IonSelect>
           </IonItem>
-          <IonItem  class="align-items-start">
-          <IonLabel>Activity Dimensions</IonLabel>
-          <IonList>
+          <IonItem class="align-items-start">
+            <IonLabel text-wrap>Activity Dimensions <p>{Object.values(formStates.recordsType).map((v, i, { length }) => {
+              return `${v.name} (${v.unit})${i < length - 1 ? ' x ' : ''}`;
+            })}</p></IonLabel>
+            <IonList inset={false} class="ion-no-padding">
               {Object.entries(formStates.recordsType).map(([key, value]) => (
-                <><p>{`${value.name} [${value.unit}]`}</p> <IonButton expand="block" onClick={()=>{removeRecordsType(key)}}>Remove</IonButton></>
+                <><p>{`${value.name} [${value.unit}]`}</p> <IonButton expand="block" onClick={() => { removeRecordsType(key) }}>Remove</IonButton></>
               ))}
-              <IonButton id="open-modal" expand="block">Add</IonButton>
-          </IonList>
-          <IonModal ref={modal} trigger="open-modal" onWillDismiss={(ev) => onWillDismiss(ev)}>
-          <IonHeader>
-            <IonToolbar>
-              <IonButtons slot="start">
-                <IonButton onClick={() => modal.current?.dismiss()}>Cancel</IonButton>
-              </IonButtons>
-              <IonTitle>Add Dimension</IonTitle>
-              <IonButtons slot="end">
-                <IonButton strong={true} onClick={() => confirm()}>
-                  Confirm
-                </IonButton>
-              </IonButtons>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent className="ion-padding">
-            <IonItem>
-              <IonLabel position="stacked">Name</IonLabel>
-              <IonInput ref={input} 
-              type="text"
-              placeholder="Dimension Name e.g. Time, Distance, Weight" 
-              onIonInput={(_e)=>{onRecordsTypeNameChange(_e)}} />
-            </IonItem>
-            <IonItem>
-              <IonLabel position="stacked">Unit</IonLabel>
-              <IonSelect
-                placeholder={RepetitionUnitValue[0]}
-                cancelText="Cancel"
-                okText="Ok"
-                multiple={false}
-                onIonChange={(_e) => setNewRecordsTypeUnit(_e.detail.value )}
-              >
-                {RepetitionUnitValue.map(unit => <IonSelectOption value={unit}>{unit}</IonSelectOption>)}
-              </IonSelect>
-            </IonItem>
-          </IonContent>
-        </IonModal>
-        </IonItem>
-          <IonButton type="submit" routerLink={PATHS.activities.url} routerDirection="none">submit</IonButton>
+              <IonButton class="ion-contr-padding" id="open-modal" expand="block">Add</IonButton>
+            </IonList>
+            <IonModal ref={modal} trigger="open-modal" onWillDismiss={(ev) => onWillDismiss(ev)}>
+              <IonHeader>
+                <IonToolbar>
+                  <IonButtons slot="start">
+                    <IonButton onClick={() => modal.current?.dismiss()}>Cancel</IonButton>
+                  </IonButtons>
+                  <IonTitle>Add Dimension</IonTitle>
+                  <IonButtons slot="end">
+                    <IonButton strong={true} onClick={() => confirm()}>
+                      Confirm
+                    </IonButton>
+                  </IonButtons>
+                </IonToolbar>
+              </IonHeader>
+              <IonContent className="ion-padding">
+                <IonItem>
+                  <IonLabel position="stacked">Name</IonLabel>
+                  <IonInput ref={input}
+                    type="text"
+                    placeholder="Dimension Name e.g. Time, Distance, Weight"
+                    onIonInput={(_e) => { onRecordsTypeNameChange(_e) }} />
+                </IonItem>
+                <IonItem>
+                  <IonLabel position="stacked">Unit</IonLabel>
+                  <IonSelect
+                    placeholder={RepetitionUnitValue[0]}
+                    cancelText="Cancel"
+                    okText="Ok"
+                    multiple={false}
+                    onIonChange={(_e) => setNewRecordsTypeUnit(_e.detail.value)}
+                  >
+                    {RepetitionUnitValue.map(unit => <IonSelectOption value={unit}>{unit}</IonSelectOption>)}
+                  </IonSelect>
+                </IonItem>
+              </IonContent>
+            </IonModal>
+          </IonItem>
+          <IonToolbar>
+              <IonButton class='form-buttons-margin' slot='end'  type="submit" routerLink={PATHS.activities.url} routerDirection="none" fill="clear" >submit</IonButton>
+              <IonButton class='form-buttons-margin' slot='start' type="reset" routerLink={PATHS.activities.url} routerDirection="none" fill="clear">cancel</IonButton>
+          </IonToolbar>
         </form>
       </IonContent>
       <IonFooter>Repeter</IonFooter>
-
     </IonPage>
   );
 }
