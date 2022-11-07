@@ -25,6 +25,8 @@ import './theme/variables.css';
 import Activities from './pages/Activities/Activites';
 import { PATHS } from './app.config';
 import AddActivity from './pages/Activities/AddActivity';
+import ActivityDetailsFC from './pages/Activities/ActivityDetails';
+import AddActivityRepetition from './pages/Activities/AddActivityRepetition';
 
 setupIonicReact();
 
@@ -46,6 +48,12 @@ const App: React.FC = () => {
             </Route>
             <Route path={PATHS.addActivity.url} exact={true}>
               <AddActivity />
+            </Route>
+            <Route path={PATHS.activityDetails.url}>
+              <ActivityDetailsFC />
+            </Route>
+            <Route path={PATHS.addActivityRepetition.url}>
+              <AddActivityRepetition recordsType={{}} />
             </Route>
           </IonRouterOutlet>
         </IonSplitPane>

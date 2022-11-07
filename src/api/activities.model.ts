@@ -19,7 +19,6 @@ export interface ActivityDetails extends ActivityInfo {
 export interface Repetition{
     id: string;
     date: Date;
-    activityId: string; 
     description: string;
     records: Record<string, number>;
 }

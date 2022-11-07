@@ -10,11 +10,11 @@ import { addSharp } from 'ionicons/icons';
 import { PATHS } from '../../app.config';
 import { ActivityInfo } from '../../api/activities.model';
 
-const recordTypeToString = (records: Record< string, string>) => {
+const recordTypeToString = (records: Record<string, string>) => {
   return Object.keys(records).map((key) => `${key} [${records[key]}] `).join(' | ');
 };
 
-const Activities: React.FC = () =>{
+const Activities: React.FC = () => {
   const [activities, setActivities] = useState<ActivityInfo[]>([]);
 
   useEffect(() => {
@@ -35,7 +35,10 @@ const Activities: React.FC = () =>{
 
       <IonContent fullscreen>
         {activities.map((activity) =>
-          <IonCard color="primary">
+          <IonCard color="primary"
+            button
+            routerDirection='none'
+            routerLink={PATHS.activityDetails.specificUrl(activity.id)}>
             <IonCardHeader>
               <IonCardTitle>{activity.name}</IonCardTitle>
               <IonCardSubtitle>{activity.tags.join(' | ')}</IonCardSubtitle>
